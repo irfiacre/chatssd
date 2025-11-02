@@ -1,8 +1,6 @@
 # works with both python 2 and 3
 from __future__ import print_function
 
-API_KEY="atsk_588b81f54875e57a3357b98a1ad1f45ffb40b8ad295a3b7ccfb96830613743c55567bc53"
-USERNAME="irfiacre"
 
 import africastalking
 
