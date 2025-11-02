@@ -7,7 +7,7 @@ from langchain.agents import create_agent
 from langchain.chat_models import init_chat_model
 from pydantic import BaseModel
 from langchain.agents.structured_output import ToolStrategy
-
+from googletrans import Translator
 
 
 load_dotenv()
@@ -30,15 +30,23 @@ def handleAgentResponse(question: str, country: str) -> str:
         timeout=30,
         max_tokens=1000,
     )
-    
+
+    translator = Translator()
+    language = translator.detect_legacy(question).lang
+    print("======>", language, translator.detect_legacy(question))
+    question = translator.translate(question, dest='en') 
+
     agent = create_agent(
         model,
         system_prompt=buildSystemPrompt(country=country),
         response_format=ToolStrategy(ResponseStructure)
-)
-    result = agent.invoke(
-        {"messages": [{"role": "user", "content": question}]},
     )
 
-    return result["structured_response"].response
+    result = agent.invoke(
+        {"messages": [{"role": "user", "content": question.text}]},
+    )
+
+    translated_response = translator.translate(result["structured_response"].response, 'en')
+
+    return translated_response.text
 
