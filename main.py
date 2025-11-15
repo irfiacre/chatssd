@@ -17,7 +17,7 @@ def ussd():
     if text == '':
         # This is the first request. Note how we start the response with CON
         response  = "CON Welcome to ChatSSD\n"
-        response += "Ask question \n"
+        response += "Ask question any question \n"
         response += "Type 0 to Exit!"
     elif text == '0':
         response = "END Finished Chatting!"     
