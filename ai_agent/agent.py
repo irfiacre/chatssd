@@ -1,14 +1,47 @@
+import asyncio
+import random
+
 from google.adk.agents.llm_agent import Agent
+from google.adk.tools import google_search
+from google.adk.runners import InMemoryRunner
+from google.genai import types
 
-# Mock tool implementation
-def get_current_time(city: str) -> dict:
-    """Returns the current time in a specified city."""
-    return {"status": "success", "city": city, "time": "10:30 AM"}
+from ai_agent.prompt import INSTRUCTIONS
 
-root_agent = Agent(
-    model='gemini-3-pro-preview',
+
+APP_NAME="chatssd"
+USER_ID=f"user-{random.randint(10, 1000)}"
+
+chat_agent = Agent(
+    model='gemini-2.5-flash',
     name='root_agent',
     description="Tells the current time in a specified city.",
-    instruction="You are a helpful assistant that tells the current time in cities. Use the 'get_current_time' tool for this purpose.",
-    tools=[get_current_time],
+    instruction=INSTRUCTIONS,
+    tools=[google_search],
 )
+
+runner = InMemoryRunner(
+    agent=chat_agent,
+    app_name=APP_NAME,
+)
+
+def create_session():
+    session = asyncio.run(runner.session_service.create_session(
+        app_name=APP_NAME, user_id=USER_ID
+    ))
+    return session
+
+def run_root_agent(session_id: str, new_message: str):
+    content = types.Content(
+        role='user', parts=[types.Part.from_text(text=new_message)]
+    )
+    result = ""
+    for event in runner.run(
+        user_id=USER_ID,
+        session_id=session_id,
+        new_message=content,
+    ):
+        if event.content.parts and event.content.parts[0].text:
+            print(f'** {event.author}: {event.content.parts[0].text}')
+            result += f'** {event.author}: {event.content.parts[0].text}'
+    return result
