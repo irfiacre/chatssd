@@ -1,4 +1,5 @@
 langchain
+langchain-deepseek
 pydantic
 dotenv
 africastalking
