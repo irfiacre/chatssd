@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/", methods = ['GET'])
 def index():
-  return {"message": "Welcome to Chatssd", "status": "up"}
+  return {"message": "Welcome to AI Education for All.", "status": "up"}
 
 @app.route("/ussd", methods = ['POST'])
 def ussd():
