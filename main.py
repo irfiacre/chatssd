@@ -15,7 +15,7 @@ def ussd():
     
     country = getCountry(phoneNumber=phone_number)
     if text == '':
-        response  = "CON Welcome to AI Education for All.\n"
+        response  = "CON Welcome to Ishuri AI for All.\n"
         response += "Ask question any question:\n"
         response += "Type 0 to Exit!"
     elif text == '0':
