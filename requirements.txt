@@ -7,3 +7,5 @@ flask
 phonenumbers
 pycountry
 langchain_google_genai
+mistralai
+langsmith
