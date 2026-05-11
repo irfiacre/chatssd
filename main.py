@@ -12,17 +12,17 @@ def index():
 def ussd():
     phone_number = request.values.get("phoneNumber", None)
     text = request.values.get("text", "default")
-    
+
     country = getCountry(phoneNumber=phone_number)
     if text == '':
         response  = "CON Welcome to Ishuri AI for All.\n"
         response += "Ask question any question:\n"
         response += "Type 0 to Exit!"
     elif text == '0':
-        response = "END Finished Chatting!"     
+        response = "END Finished Chatting!"
     else:
         response = f"CON {handleAgentResponse(question=text, country=country)}"
-    
+
     return response
 
 

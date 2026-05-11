@@ -6,4 +6,4 @@ flask
 phonenumbers
 pycountry
 langchain_google_genai
-mistralai==1.9.11
+langchain_mistralai

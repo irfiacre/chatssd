@@ -1,12 +1,11 @@
 import os
 from dotenv import load_dotenv
 from src.prompt import buildSystemPrompt
-# from langchain.agents import create_agent
-# from langchain.chat_models import init_chat_model
+from langchain.agents import create_agent
+
 from pydantic import BaseModel
-# from langchain.agents.structured_output import ToolStrategy
-# from langchain_deepseek import ChatDeepSeek
-from mistralai import Mistral
+from langchain.agents.structured_output import ToolStrategy
+from langchain_mistralai import ChatMistralAI
 
 
 load_dotenv()
@@ -18,21 +17,26 @@ MISTRAL_API_KEY = os.environ.get("MISTRAL_API_KEY")
 if not MISTRAL_API_KEY:
     raise ValueError("Missing MISTRAL_API_KEY environment variable.")
 
-client = Mistral(api_key=MISTRAL_API_KEY)
+model = ChatMistralAI(
+    model="mistral-medium-latest",
+    temperature=0,
+    max_retries=2,
+    api_key=MISTRAL_API_KEY,
+)
 
 
 def handleAgentResponse(question: str, country: str) -> str:
     """
     Handles the AI agent response.
     """
-    def query_mistral(prompt: str):
-        response = client.chat.complete(
-            model="mistral-medium-latest",
-            messages=[{"role": "user", "content": prompt}],
-        )
-        return response.choices[0].message
+    agent = create_agent(
+        model,
+        system_prompt=buildSystemPrompt(country=country),
+        response_format=ToolStrategy(ResponseStructure)
+    )
 
-    questionPrompt = buildSystemPrompt(country=country, question=question)
+    result = agent.invoke(
+        {"messages": [{"role": "user", "content": question}]},
+    )
 
-    result = query_mistral(questionPrompt)
-    return result
+    return result["structured_response"].response
