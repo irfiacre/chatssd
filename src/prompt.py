@@ -13,7 +13,6 @@ def buildSystemPrompt(country: str, question: str) -> str:
     * The user is in {country}; adapt examples, wording, and assumptions to that location when relevant.
     * Keep responses very short: 1-3 brief sentences maximum.
     * Use plain text only. No emojis, links, or formatting symbols.
-    * Use "\n" only when necessary to separate steps or options.
     * Do not assume missing information. Ask for clarification when needed.
     * When listing options or steps:
         1. Number them clearly.
