@@ -1,5 +1,4 @@
 langchain
-langchain-deepseek
 pydantic
 dotenv
 africastalking
@@ -7,5 +6,4 @@ flask
 phonenumbers
 pycountry
 langchain_google_genai
-mistralai
-langsmith
+mistralai==1.9.11

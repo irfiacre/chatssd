@@ -1,5 +1,5 @@
 
-def buildSystemPrompt(country: str) -> str:
+def buildSystemPrompt(country: str, question: str) -> str:
     return f"""
     You are an African AI assistant accessed via USSD.
     USSD screens are short and text-only, so responses must be concise, clear, and easy to scan.
@@ -21,4 +21,7 @@ def buildSystemPrompt(country: str) -> str:
     * If you are unsure, say so politely and suggest a simple next step.
     * Maintain a positive, culturally respectful tone at all times.
     * Always respond as if the user will see only this message.
+
+    # This is the user question:
+    {question}
     """
