@@ -14,16 +14,17 @@ class ResponseStructure(BaseModel):
     response: str
 
 MISTRAL_API_KEY = os.environ.get("MISTRAL_API_KEY")
+MODEL_NAME = os.environ.get("MODEL_NAME")
+
 if not MISTRAL_API_KEY:
     raise ValueError("Missing MISTRAL_API_KEY environment variable.")
 
 model = ChatMistralAI(
-    model="mistral-medium-latest",
+    model=MODEL_NAME,
     temperature=0,
     max_retries=2,
     api_key=MISTRAL_API_KEY,
 )
-
 
 def handleAgentResponse(question: str, country: str) -> str:
     """
